@@ -65,6 +65,7 @@ function savePhotosToState(apiPhotos){
     })  
     sortPhotosByDate();
     var map = new Map(getFirstLatLng());
+    addMarkersForEachPhoto(map);
     console.log(state);
 }
 
@@ -87,6 +88,12 @@ function getFirstLatLng(){
     var firstPhoto = state.photos[0];
     latLng = {lat: Number(firstPhoto.latitude), lng: Number(firstPhoto.longitude)}
     return latLng;
+}
+
+function addMarkersForEachPhoto(map){
+    state.photos.forEach(function(photo){
+        map.addMarker({lat: Number(photo.latitude), lng: Number(photo.longitude)}, photo.name);
+    })
 }
 
 function Map(latLng){
