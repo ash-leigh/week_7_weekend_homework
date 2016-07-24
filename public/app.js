@@ -11,7 +11,7 @@ function handleClick(inputUserId, minDate, maxDate){
   var button = document.getElementById('find-button');
   button.onclick = function(){
     saveUserInput();
-    }
+}
 }
 
 function saveUserInput(){
@@ -43,7 +43,7 @@ function saveUserToState(apiUserId){
 }
 
 function getPhotos(userId, minDate, maxDate){
-    var url = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=d836aea8ef2a786aad020fb216b0b1c4&user_id=' + userId + '&min_taken_date=' + minDate + '&max_taken_date=' + maxDate + '&extras=geo%2C+date_taken&format=json&nojsoncallback=1' 
+    var url = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=d836aea8ef2a786aad020fb216b0b1c4&user_id=' + userId + '&min_taken_date=' + minDate + '&max_taken_date=' + maxDate + '&extras=geo%2C+date_taken%2C+views&format=json&nojsoncallback=1' 
     var request = new XMLHttpRequest();
     request.open("GET", url);
     request.onload = function () {
@@ -91,9 +91,11 @@ function getFirstLatLng(){
 
 function addPhotoMarkers(map, photos){
     photos.forEach(function(photo){
-        var content = infoWindowContent(photo.farm, photo.server, photo.id, photo.secret, photo.title);
-        map.addInfoWindow({lat: Number(photo.latitude), lng: Number(photo.longitude)}, content, "icon-camera.png")
+        var content = infoWindowContent(photo.farm, photo.server, photo.id, photo.secret, photo.title, photo.views);
+        var title = photo.title
+        map.addInfoWindow({lat: Number(photo.latitude), lng: Number(photo.longitude)}, content, title, "icon-camera.png")
     })
+    new ViewChart(viewsData(photos));
 }
 
 function addGalleryImage(photoContent){
@@ -115,11 +117,11 @@ function Map(latLng){
   });
     return marker
 },
-  this.addInfoWindow = function(latLng, content, icon){
+this.addInfoWindow = function(latLng, content, title, icon){
     var marker = this.addMarker(latLng, content, icon);
     marker.addListener('click', function() {
       var infowindow = new google.maps.InfoWindow({
-          content: content
+          content: title
       });
       infowindow.open(this.map, marker);
       addGalleryImage(content);
@@ -127,9 +129,17 @@ function Map(latLng){
 }
 }
 
-function infoWindowContent(farm, server, id, secret, title, onclickFunction){
-    return '<img src=' + 'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + '.jpg height=150px></img><p>' + title + '>';
+function infoWindowContent(farm, server, id, secret, title, views){
+    return '<p id="viewsText">' + views + ' VIEWS</p><img src=' + 'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + '.jpg></img>'
+}
 
+function viewsData(photos){
+  dataObject = [];
+  data = photos.forEach(function(photo){
+    viewObject = {name: photo.title, y: Number(photo.views)};
+    dataObject.push(viewObject);
+  })
+  return dataObject;
 }
 
 

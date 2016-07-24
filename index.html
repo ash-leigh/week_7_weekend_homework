@@ -2,27 +2,32 @@
 <html>
 <head>
   <title>Map Test</title>
-  <script src="app.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="viewsChart.js"></script>
+  <script src="app.js"></script>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <header>
-<div class="grid-container row col-6">
-  <img src="/logo.png" alt="logo" height="150"></a>
-</div>
+  <div class="grid-container row col-6">
+    <img src="/logo.png" alt="logo" height="150"></a>
+  </div>
 </header>
-  <body>
+<body>
   <form>
-  Flickr username:
+    Flickr username:
     <input type="text" id="flickrUsername" name="flickrUsername">
-  First date taken:
+    First date taken:
     <input type="date" id="minDate" name="minDate">
-  Last date taken:
+    Last date taken:
     <input type="date" id="maxDate" name="maxDate">
     <input type='button' value="map my photos" id="find-button">
-    </form>
-    <div id='map'></div>
-    <div id='image'></div>
-  </body>
+  </form>
+  <div class="row">
+    <div id='map' class="col-3"></div>
+    <div id='viewChart' class="col-3"></div>
+    <!-- <div id='image' class="col-3"></div> -->
+  </div>
+</body>
 
 </html>

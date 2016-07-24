@@ -70,6 +70,25 @@ form {
   height:500px;
   width:500px;
   margin:50px;
-  border-width: 1px;
   border-radius: 50%;
+}
+
+#image {
+  height:500px;
+  width:500px;
+  margin:50px;
+  padding-top: 20px;
+}
+
+#viewChart {
+  height:500px;
+  width:500px;
+  margin:50px;
+}
+
+#viewsText {
+  text-align: center;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 25px;
+  color: #000000;
 }
