@@ -65,7 +65,7 @@ function savePhotosToState(apiPhotos){
     })  
     sortPhotosByDate();
     var map = new Map(getFirstLatLng());
-    addMarkersForEachPhoto(map);
+    addPhotoMarkers(map, state.photos);
     console.log(state);
 }
 
@@ -90,9 +90,10 @@ function getFirstLatLng(){
     return latLng;
 }
 
-function addMarkersForEachPhoto(map){
-    state.photos.forEach(function(photo){
-        map.addMarker({lat: Number(photo.latitude), lng: Number(photo.longitude)}, photo.name);
+function addPhotoMarkers(map, photos){
+    photos.forEach(function(photo){
+        content = infoWindowContent(photo.farm, photo.server, photo.id, photo.secret, photo.title);
+    map.addInfoWindow({lat: Number(photo.latitude), lng: Number(photo.longitude)}, content, "icon-camera.png")
     })
 }
 
@@ -101,33 +102,29 @@ function Map(latLng){
     center: latLng,
     zoom: 10
 }),
-  this.addMarker = function(latLng, title, icon){
+  this.addMarker = function(latLng, content, icon){
     var marker = new google.maps.Marker({
       position: latLng,
       map: this.map,
-      title: title,
+      content: content,
       icon: icon
   });
     return marker
 },
-  // this.bindClick = function(){
-  //   google.maps.event.addListener(this.map, 'click', function(event){
-  //     this.addInfoWindow({lat: event.latLng.lat(), lng: event.latLng.lng()}, "meow!", "https://33.media.tumblr.com/avatar_e2fbfbcbb52d_128.png");
-  //   }.bind(this));
-  // },
-  this.addInfoWindow = function(latLng, title, icon){
-    var marker = this.addMarker(latLng, title, icon);
+  this.addInfoWindow = function(latLng, content, icon){
+    var marker = this.addMarker(latLng, content, icon);
     marker.addListener('click', function() {
       var infowindow = new google.maps.InfoWindow({
-          content: this.title
+          content: content
       });
       infowindow.open(this.map, marker);
   });
 }
 }
 
-function convertToImage(farm, server, id, secret){
-    'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + '.jpg'
+function infoWindowContent(farm, server, id, secret, title){
+    return '<img src=' + 'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + '.jpg></img><p>' + title
+
 }
 
 
