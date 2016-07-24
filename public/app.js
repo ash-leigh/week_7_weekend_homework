@@ -33,7 +33,6 @@ function findUser(username, minDate, maxDate){
             var personObject = JSON.parse(jsonString);
             saveUserToState(personObject.user.id);
             getPhotos(personObject.user.id, minDate, maxDate);
-
         }
     }
     request.send();
@@ -92,15 +91,20 @@ function getFirstLatLng(){
 
 function addPhotoMarkers(map, photos){
     photos.forEach(function(photo){
-        content = infoWindowContent(photo.farm, photo.server, photo.id, photo.secret, photo.title);
-    map.addInfoWindow({lat: Number(photo.latitude), lng: Number(photo.longitude)}, content, "icon-camera.png")
+        var content = infoWindowContent(photo.farm, photo.server, photo.id, photo.secret, photo.title);
+        map.addInfoWindow({lat: Number(photo.latitude), lng: Number(photo.longitude)}, content, "icon-camera.png")
     })
+}
+
+function addGalleryImage(photoContent){
+    div = document.getElementById('image')
+    div.innerHTML = photoContent;
 }
 
 function Map(latLng){
   this.map = new google.maps.Map(document.getElementById('map'), {
     center: latLng,
-    zoom: 10
+    zoom: 15
 }),
   this.addMarker = function(latLng, content, icon){
     var marker = new google.maps.Marker({
@@ -118,12 +122,13 @@ function Map(latLng){
           content: content
       });
       infowindow.open(this.map, marker);
+      addGalleryImage(content);
   });
 }
 }
 
-function infoWindowContent(farm, server, id, secret, title){
-    return '<img src=' + 'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + '.jpg></img><p>' + title
+function infoWindowContent(farm, server, id, secret, title, onclickFunction){
+    return '<img src=' + 'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + '.jpg height=150px></img><p>' + title + '>';
 
 }
 
