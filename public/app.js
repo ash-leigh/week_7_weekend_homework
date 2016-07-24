@@ -91,7 +91,7 @@ function getFirstLatLng(){
 
 function addPhotoMarkers(map, photos){
     photos.forEach(function(photo){
-        var content = infoWindowContent(photo.farm, photo.server, photo.id, photo.secret, photo.title, photo.views);
+        content = infoWindowContent(photo.farm, photo.server, photo.id, photo.secret, photo.title, photo.views);
         var title = photo.title
         map.addInfoWindow({lat: Number(photo.latitude), lng: Number(photo.longitude)}, content, title, "icon-camera.png")
     })

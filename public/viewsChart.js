@@ -1,4 +1,4 @@
-var ViewChart = function(viewpopulationData){
+var ViewChart = function(viewpopulationData, clickFunction){
 
   var container = document.getElementById('viewChart');
 
@@ -18,6 +18,10 @@ var ViewChart = function(viewpopulationData){
           enabled: false
         }
       }
+    },
+
+    events: { 
+      click: clickFunction
     },
 
     credits: {
