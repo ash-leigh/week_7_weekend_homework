@@ -1,4 +1,75 @@
+.grid_container {
+  width: 100%;
+  max-width: 2560px;
+  text-align: center;
+}
+
+.row:before, 
+.row:after {
+  content:"";
+  display: table ;
+  clear:both;
+}
+[class*='col-'] {
+   float: left;
+   min-height: 1px; 
+   width: 8.33%; 
+   padding: 10px;
+   align-content: center;
+}
+.col-1{width: 16.66%;}
+.col-2{width: 33.33%;}
+.col-3{width: 50%;}
+.col-4{width: 66.66%;}
+.col-5{width: 83.33%;}
+.col-6{width: 100%;}
+
+#flickrUsername{
+  width: 200px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: 2px solid #000000;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 15px;
+  color: #000000;
+}
+
+#minDate{
+  width: 200px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: 2px solid #000000;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 15px;
+  color: #000000;
+}
+
+#maxDate{
+  width: 200px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: 2px solid #000000;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 15px;
+  color: #000000;
+}
+
+body {
+  background: radial-gradient(#ffffff, #000000);
+  text-align: center;
+}
+
+form {
+  text-align: center;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 15px;
+  color: #000000;
+}
+
 #map {
   height:1000px;
   width:1000px;
+  margin:50px;
+  border-width: 1px;
+  border-radius: 50%;
 }
