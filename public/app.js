@@ -7,47 +7,11 @@ window.onload = function () {
     handleClick();
 };
 
-function getFirstLatLng(){
-    var firstPhoto = state.photos[0];
-    latLng = {lat: Number(firstPhoto.latitude), lng: Number(firstPhoto.longitude)}
-    return latLng;
-}
-
-function Map(latLng){
-  this.map = new google.maps.Map(document.getElementById('map'), {
-    center: latLng,
-    zoom: 18
-  }),
-  this.addMarker = function(latLng, title, icon){
-    var marker = new google.maps.Marker({
-      position: latLng,
-      map: this.map,
-      title: title,
-      icon: icon
-    });
-    return marker
-  },
-  // this.bindClick = function(){
-  //   google.maps.event.addListener(this.map, 'click', function(event){
-  //     this.addInfoWindow({lat: event.latLng.lat(), lng: event.latLng.lng()}, "meow!", "https://33.media.tumblr.com/avatar_e2fbfbcbb52d_128.png");
-  //   }.bind(this));
-  // },
-  this.addInfoWindow = function(latLng, title, icon){
-    var marker = this.addMarker(latLng, title, icon);
-    marker.addListener('click', function() {
-      var infowindow = new google.maps.InfoWindow({
-          content: this.title
-        });
-      infowindow.open(this.map, marker);
-    });
-  }
-}
-
 function handleClick(inputUserId, minDate, maxDate){
   var button = document.getElementById('find-button');
   button.onclick = function(){
     saveUserInput();
-  }
+    }
 }
 
 function saveUserInput(){
@@ -69,7 +33,7 @@ function findUser(username, minDate, maxDate){
             var personObject = JSON.parse(jsonString);
             saveUserToState(personObject.user.id);
             getPhotos(personObject.user.id, minDate, maxDate);
-    
+
         }
     }
     request.send();
@@ -95,10 +59,64 @@ function getPhotos(userId, minDate, maxDate){
 
 function savePhotosToState(apiPhotos){
     apiPhotos.forEach(function(photo){
-        state.photos.push(photo);
+        if (photo.latitude > 0 && photo.longitude > 0){
+            state.photos.push(photo);
+        }
     })  
-    console.log(state);
+    sortPhotosByDate();
     var map = new Map(getFirstLatLng());
+    console.log(state);
+}
+
+function sortPhotosByDate(){
+    state.photos.forEach(function(photo){
+        photo.datetaken = Date.parse(photo.datetaken)/1000;
+    })
+    state.photos.sort(function(a, b){
+        if (a.datetaken > b.datetaken){
+            return 1;
+        }
+        if (a.datetaken < b.datetaken){
+            return -1;
+        }
+        return 0;
+    })
+}
+
+function getFirstLatLng(){
+    var firstPhoto = state.photos[0];
+    latLng = {lat: Number(firstPhoto.latitude), lng: Number(firstPhoto.longitude)}
+    return latLng;
+}
+
+function Map(latLng){
+  this.map = new google.maps.Map(document.getElementById('map'), {
+    center: latLng,
+    zoom: 10
+}),
+  this.addMarker = function(latLng, title, icon){
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: this.map,
+      title: title,
+      icon: icon
+  });
+    return marker
+},
+  // this.bindClick = function(){
+  //   google.maps.event.addListener(this.map, 'click', function(event){
+  //     this.addInfoWindow({lat: event.latLng.lat(), lng: event.latLng.lng()}, "meow!", "https://33.media.tumblr.com/avatar_e2fbfbcbb52d_128.png");
+  //   }.bind(this));
+  // },
+  this.addInfoWindow = function(latLng, title, icon){
+    var marker = this.addMarker(latLng, title, icon);
+    marker.addListener('click', function() {
+      var infowindow = new google.maps.InfoWindow({
+          content: this.title
+      });
+      infowindow.open(this.map, marker);
+  });
+}
 }
 
 function convertToImage(farm, server, id, secret){
