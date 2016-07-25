@@ -71,21 +71,21 @@ form {
   width:500px;
   margin:50px;
   border-radius: 50%;
-  float:left;
+  /*float:left;*/
 }
 
 #image {
-  height:250px;
-  width:250px;
-  float:right;
+  height:500px;
+  width:500px;
+  /*float:right;*/
   margin-top: 200px;
 }
 
 #viewChart {
   height:300px;
   width:300px;
-  float:right;
-  padding-right: 50;
+  /*float:right;*/
+  padding-right: 50px;
 }
 
 #viewsText {
